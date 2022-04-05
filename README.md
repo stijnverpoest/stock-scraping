@@ -1,2 +1,2 @@
 # stock-scraping
- Scraping Financial Data
+ Scraping Financial Data from the internet in an automated way.
