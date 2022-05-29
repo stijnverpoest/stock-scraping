@@ -182,7 +182,7 @@ def hist_stock_price(ticker, startyear, startmonth, startday):
     return df
 
 
-def plot_sp(ticker, startyear, startmonth, startday):
+def plot_sp(ticker, startyear, startmonth, startday, type='absolute'):
     
     """
     Plot the historical stock price of a company from a specified time period.
@@ -197,6 +197,10 @@ def plot_sp(ticker, startyear, startmonth, startday):
     startmonth: int
     startday: int
         Starting date of the data you want to consult.
+        
+    type: str
+        Absolute: returns the stock price in absoulte values.
+        Relative: return the stock price in relative terms where the starting point is 100.
 
     Returns
     -------
@@ -211,14 +215,28 @@ def plot_sp(ticker, startyear, startmonth, startday):
     mini = dataset['Close'].min()
     mini_dt = dataset.loc[dataset['Close'] == dataset['Close'].min(), 'Date']
     
+    start = dataset.loc[dataset['Date'] == dataset['Date'].min(), 'Close'].iloc[0]
+    start_dt = dataset['Date'].min()
+    
     #create plot
-    plt.plot('Date', 'Close', color = 'navy', data = dataset)
-    plt.plot('Date', 'Close', ',', color = 'black', data = dataset)
-    plt.plot(maxi_dt, maxi, 'x', color='mediumseagreen')
-    plt.plot(mini_dt, mini, 'h', color='firebrick')
-    plt.title(str(ticker) + " Stock price")
-    plt.xticks(rotation='90')
-    plt.show()
+    if type == 'absolute':
+        plt.plot('Date', 'Close', color = 'navy', data = dataset)
+        plt.plot('Date', 'Close', ',', color = 'black', data = dataset)
+        plt.plot(maxi_dt, maxi, 'x', color='mediumseagreen')
+        plt.plot(mini_dt, mini, 'h', color='firebrick')
+        plt.title(str(ticker) + " Stock price")
+        plt.xticks(rotation='90')
+        plt.show()
+    elif type == 'relative':
+        plt.plot(dataset['Date'], (dataset['Close']/start)*100, color = 'navy')
+        plt.plot(dataset['Date'], (dataset['Close']/start)*100, ',', color = 'black')
+        plt.plot(maxi_dt, (maxi/start)*100, 'x', color='mediumseagreen')
+        plt.plot(mini_dt, (mini/start)*100, 'h', color='firebrick')
+        plt.plot(start_dt, 100, 'X', c='black')
+        plt.title(str(ticker) + " Stock price")
+        plt.xticks(rotation='90')
+        plt.axhline(100, color='black', linestyle='--')
+        plt.show()
     
 
     
