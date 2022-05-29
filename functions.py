@@ -301,7 +301,7 @@ def relative_diff(dataset, months_back):
         diff = ((new - old) / old)*100
         diff2 = round(diff, 2)
         
-        return print('Relative difference 3 months: ' + str(diff2)+'%' + ' [compared to ' + str(m3.date()) + ']')
+        return print('Relative difference ' + str(months_back) + ' months: ' + str(diff2)+'%' + ' [compared to ' + str(m3.date()) + ']')
     
     except IndexError:
         print("Error: No data available for that period, try a lower number.")
